@@ -3,9 +3,8 @@ const connection = require("./dbconfig");
 
 function antiSpam(req, res, next){
 	connection.query(
-		`SLECT * FROM antiSpam WHERE ip='antiSpam'`,
+		`SELECT * FROM antiSpam WHERE ip='${req.connection.remoteAddress}'`,
 		(err, response) => {
-			console.log(response);
 		  if(response.length){
 			  if(Date() - response[0].request_date < 1200000){
 				console.log(Date() - response[0].request_date);
