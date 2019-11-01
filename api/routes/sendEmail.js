@@ -4,6 +4,7 @@ const mailer = require('sendmail')({silent: true});
 
 router.post('/', (req, res)=>{
 	console.log(req.host);
+	
 	mailer({
 		from: '"dmitryliskovich" <dmitry.liskovich@github.com>',
 		to: 'dimalis199586@gmail.com',
