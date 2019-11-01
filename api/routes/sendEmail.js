@@ -11,7 +11,7 @@ router.post('/', (req, res)=>{
 		subject: 'MailComposer sendmail',
 		html: 'Mail of test sendmail '
 	}, (err, repl)=>{
-		console.log(err)
+		console.log(err.message)
 		if(err){
 			return res.status(400).json({message: err});
 		}
