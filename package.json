@@ -3,7 +3,12 @@
   "version": "1.0.0",
   "main": "index.js",
   "license": "MIT",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "heroku": "git add . && git commit -m 'Server' && git push heroku master && heroku open && heroku logs --tail"
+  },
   "dependencies": {
+    "dotenv": "^8.2.0",
     "express": "^4.17.1",
     "nodemailer": "0.7.1"
   }
