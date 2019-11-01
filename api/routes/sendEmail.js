@@ -11,8 +11,8 @@ router.post('/', (req, res)=>{
 		subject: 'Contact Page',
 		text: req.body.text
 	}, (err, repl)=>{
-		console.log(err && err.stack)
-  		console.dir(reply)
+		console.log(err)
+  		// console.dir(reply)
 	})
 	return res.status(200).json({message: 'OK'});
 
