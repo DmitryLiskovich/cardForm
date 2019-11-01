@@ -10,11 +10,11 @@ function antiSpam(req, res, next){
 				console.log(Date() - response[0].request_date);
 				  return res.status(400).json({message: 'Try in 20 min'});
 			  }else{
-				  connection.query(`UPDATE antiSpam SET request_date=${new Date()} WHERE ip='${req.connection.adress}'`);
+				  connection.query(`UPDATE antiSpam SET request_date=${new Date()} WHERE ip='${req.connection.remoteAddress}'`);
 				  next();
 			  }
 		  }else{
-			connection.query(`INSERT INTO antiSpam VALUES (default, '${req.connection.adress}', ${Date})`);
+			connection.query(`INSERT INTO antiSpam VALUES (default, '${req.connection.remoteAddress}', ${new Date()})`);
 			next();
 		  }
 		}
