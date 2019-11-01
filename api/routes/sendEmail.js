@@ -1,15 +1,15 @@
 const express = require('express');
 const router = express.Router();
-const mailer = require('sendmail')();
+const mailer = require('sendmail')({silent: true});
 
 router.post('/', (req, res)=>{
 	console.log(req.body);
 	// sendEmail(req.body.text).catch(err=> console.log(err))
 	mailer({
-		from: '<dima_liskovich@mail.ru>',
-		to: 'dimalis199586@gmail.com' ,
-		subject: 'Contact Page',
-		html: req.body.text
+		from: 'test@yourdomain.com',
+		to: 'dimlis199586@gmail.com',
+		subject: 'MailComposer sendmail',
+		html: 'Mail of test sendmail '
 	}, (err, repl)=>{
 		console.log(err)
 		if(err){
