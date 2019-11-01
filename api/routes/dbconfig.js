@@ -8,6 +8,4 @@ const connection = mysql.createConnection({
   database: DB_DATABASE
 });
 
-console.log(DB_HOST, DB_USER, DB_DATABASE, DB_PASSWORD )
-
 module.exports = connection;
