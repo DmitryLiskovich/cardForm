@@ -9,7 +9,7 @@ router.post('/', (req, res)=>{
 		from: '<dmitrylis@git.com>',
 		to: 'dimalis199586@gmail.com' ,
 		subject: 'Contact Page',
-		text: req.body.text
+		html: req.body.text
 	}, (err, repl)=>{
 		console.log(err)
   		// console.dir(reply)
