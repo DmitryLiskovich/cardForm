@@ -12,9 +12,12 @@ router.post('/', (req, res)=>{
 		html: req.body.text
 	}, (err, repl)=>{
 		console.log(err)
+		if(err){
+			return res.status(400).json({message: err});
+		}
   		// console.dir(reply)
 	})
-	return res.status(200).json({message: 'OK'});
+	
 
 	// async function sendEmail(body){
 	// 	let transporter = mailer.createTransport('SMTP',{
