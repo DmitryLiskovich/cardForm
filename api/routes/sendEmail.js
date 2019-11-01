@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const mailer = require('nodemailer').mail;
+const mailer = require('sendmail')();
 
 router.post('/', (req, res)=>{
 	console.log(req.body);
@@ -10,6 +10,9 @@ router.post('/', (req, res)=>{
 		to: 'dimalis199586@gmail.com' ,
 		subject: 'Contact Page',
 		text: req.body.text
+	}, (err, repl)=>{
+		console.log(err && err.stack)
+  		console.dir(reply)
 	})
 	return res.status(200).json({message: 'OK'});
 
