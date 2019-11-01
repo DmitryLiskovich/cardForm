@@ -6,7 +6,7 @@ router.post('/', (req, res)=>{
 	console.log(req.body);
 	// sendEmail(req.body.text).catch(err=> console.log(err))
 	mailer({
-		from: '"My web page 👻" <dmitrylis@git.com>',
+		from: '<dmitrylis@git.com>',
 		to: 'dimalis199586@gmail.com' ,
 		subject: 'Contact Page',
 		text: req.body.text
