@@ -8,7 +8,7 @@ router.post('/', (req, res)=>{
 		from: '"dmitryliskovich.github.io" <dmitry.liskovich@github.com>',
 		to: 'dimalis199586@gmail.com',
 		subject: 'Message from github page',
-		html: `<p style='font-style: italic, font-size: 18px'>${req.body.text}</p>`
+		html: `<p style='font-style: italic; font-size: 18px'>${req.body.text}</p>`
 	}, (err, repl)=>{
 		if(err){
 			console.log(err);
