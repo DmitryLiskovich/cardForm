@@ -6,7 +6,7 @@ function antiSpam(req, res, next){
 		`SELECT * FROM antiSpam WHERE ip='${req.connection.remoteAddress}'`,
 		(err, response) => {
 		  if(response.length){
-			  if(Date.now() - response[0].request_date < 1200000){
+			  if(Date.now() - +response[0].request_date < 1200000){
 				  return res.status(400).json({message: 'Try in 20 min'});
 			  }else{
 				  connection.query(`UPDATE antiSpam SET request_date='${Date.now()}' WHERE ip='${req.connection.remoteAddress}'`);
