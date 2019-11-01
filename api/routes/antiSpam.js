@@ -13,6 +13,7 @@ function antiSpam(req, res, next){
 				  connection.query(`UPDATE antiSpam SET request_date='${Date.now()}' WHERE ip='${req.connection.remoteAddress}'`);
 				  next();
 			  }
+			  
 		  }else{
 			connection.query(`INSERT INTO antiSpam VALUES (default, '${req.connection.remoteAddress}', '${Date.now()}')`);
 			next();
