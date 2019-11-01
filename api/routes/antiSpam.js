@@ -3,7 +3,7 @@ const connection = require("./dbconfig");
 
 function antiSpam(req, res, next){
 	connection.query(
-		`SLECT * FROM antiSpam WHERE ip='${req.connection.adress}'`,
+		`SLECT * FROM antiSpam WHERE ip='${req.connection.remoteAddress}'`,
 		(err, response) => {
 		console.log(response);
 		  if(response.length){
