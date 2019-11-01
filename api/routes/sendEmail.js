@@ -7,7 +7,7 @@ router.post('/', (req, res)=>{
 	mailer({
 		from: '"dmitryliskovich.github.io" <dmitry.liskovich@github.com>',
 		to: 'dimalis199586@gmail.com',
-		subject: 'Message from github page',
+		subject: `<h3>${req.body.them}</h3>`,
 		html: `<p style='font-style: italic; font-size: 18px'>${req.body.text}</p>`
 	}, (err, repl)=>{
 		if(err){
