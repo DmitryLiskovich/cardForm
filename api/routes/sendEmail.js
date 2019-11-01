@@ -5,10 +5,10 @@ const mailer = require('sendmail')({silent: true});
 router.post('/', (req, res)=>{
 	console.log(req.body);
 	mailer({
-		from: '"dmitryliskovich.github.io" <dmitry.liskovich@github.com>',
+		from: '"dmitryliskovich" <dmitry.liskovich@github.com>',
 		to: 'dimalis199586@gmail.com',
-		subject: `<h3>${req.body.them}</h3>`,
-		html: `<p style='font-style: italic; font-size: 18px'>${req.body.text}</p>`
+		subject: `Work`,
+		html: `<h3>${req.body.them}</h3><p style='font-style: italic; font-size: 18px'>${req.body.text}</p>`
 	}, (err, repl)=>{
 		if(err){
 			console.log(err);
