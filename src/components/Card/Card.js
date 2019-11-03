@@ -64,7 +64,7 @@ export default function Card(){
 
   function FirstSide(){
     return(
-      <div className='card-visual-wrap'>
+      <div className={`card-visual-wrap ${data.cvvRotate ? 'active' : ''}`}>
         <div className='card-visual-visa'></div>
         <div className='card-visual-number'>
           <div className='card-visual-number-1'>
@@ -110,7 +110,7 @@ export default function Card(){
 
   function BackSide(){
     return(
-      <div className='card-visual-wrap-mirror'>
+      <div className={`card-visual-wrap-mirror ${data.cvvRotate ? 'active' : ''}`}>
         <div className='card-visual-magn'></div>
         <div className='card-visual-cvv'>
           <div className='card-visual-cvv-descryption'>CVV</div>
@@ -123,13 +123,16 @@ export default function Card(){
   function changeSide(e){
     const newState = e.type === 'focus' ? true : false;
     setData({...data, cvvRotate: newState});
-    setTimeout(()=> setData({...data, rotateCard: newState, cvvRotate: newState}), 500);
+    setData({...data, rotateCard: newState, cvvRotate: newState});
   }
   
   return(
     <div className="card">
       <div className={`card-visual ${data.cvvRotate ? 'active' : ''}`}>
-        {data.rotateCard  ? <BackSide/> : <FirstSide/>}
+        {/* {data.rotateCard  ? <BackSide/> : <FirstSide/>} */}
+        <FirstSide/>
+        <div className={`card-visual-card ${data.cvvRotate ? 'active' : ''}`}></div>
+        <BackSide/> 
       </div>
       <section className='card-input'>
         <form>
