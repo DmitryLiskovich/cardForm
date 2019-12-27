@@ -1,6 +1,16 @@
 const express = require("express");
 const app = express();
+const io = require('socket.io').listen(3001);
 const bodyParser = require("body-parser");
+
+io.on('connection', (socket)=>{
+	socket.on('message', (message)=>{
+		socket.broadcast.send(message)
+	})
+	socket.on('disconnect', ()=>{
+		socket.send({message:`User has been disconnected`, type: 'connect'});
+	})
+})
 
 app.disable("x-powered-by");
 
