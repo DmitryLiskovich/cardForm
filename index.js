@@ -9,7 +9,7 @@ server.listen(port, ()=>{
 	console.log("Express is open on port " + port);
 });
 
-const io = require('socket.io').listen(3001);
+const io = require('socket.io').listen(server);
 
 io.on('connection', (socket)=>{
 	socket.on('message', (message)=>{
