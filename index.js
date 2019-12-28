@@ -22,7 +22,7 @@ io.on('connection', (socket)=>{
 		}
 		socket.on('message', (message, user)=>{
 			peers[room] = {};
-			peers[room][user] = message[user];
+			peers[room][user] = message;
 			currentPeers = peers[room];
 			socket.broadcast.to(room).send(currentPeers);
 		})
