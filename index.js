@@ -9,14 +9,28 @@ server.listen(port, ()=>{
 	console.log("Express is open on port " + port);
 });
 
+const peers = {};
+
 const io = require('socket.io').listen(server);
 
 io.on('connection', (socket)=>{
-	socket.on('message', (message, userId)=>{
-		console.log(userId);
-		socket.broadcast.send(message)
-	})
-	socket.on('disconnect', ()=>{
-		socket.send({message:`User has been disconnected`, type: 'connect'});
+	socket.on('join', (room, user)=>{
+		socket.join(room);
+		if(peers[room]){
+			currentPeers = peers[room];
+			socket.send(currentPeers);
+		}
+		socket.on('message', (message, user)=>{
+			peers[room] = {};
+			peers[room][user] = message[user];
+			currentPeers = peers[room];
+			socket.broadcast.to(room).send(currentPeers);
+		})
+		socket.on('close', id => {
+			console.log(id);
+		});
+		socket.on('disconnect', (name)=>{
+			delete peers[user];
+		})
 	})
 })
