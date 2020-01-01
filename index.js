@@ -40,6 +40,7 @@ io.on('connection', (socket)=>{
 		});
 		socket.on('disconnect', (name)=>{
 			delete peers[room][user];
+			
 			socket.broadcast.to(room).send(currentPeers);
 		})
 	})
