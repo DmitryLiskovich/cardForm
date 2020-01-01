@@ -14,19 +14,25 @@ const peers = {};
 const io = require('socket.io').listen(server);
 
 io.on('connection', (socket)=>{
-	socket.on('join', (room, user, id)=>{
+	socket.on('join', (room, user)=>{
 		socket.join(room);
-		console.log(id);
 		if(!peers[room]){
 			peers[room] = {};
-			peers[room][user] = id;
+			peers[room][user] = null;
 			currentPeers = peers[room];
 		}else{
-			peers[room][user] = id;
+			if(peers[room][user]){
+				socket.send({type: 'err', message: 'Already created'});
+				return false;
+			}else{
+				socket.send({type: 'Ok', message: 'Created'});
+			}
+			peers[room][user] = null;
 			currentPeers = peers[room];
 		}
 		socket.send(currentPeers);
 		socket.on('message', (message)=>{
+			peers[room][user] = message;
 			socket.broadcast.to(room).send(currentPeers);
 		})
 		socket.on('close', id => {
@@ -34,6 +40,7 @@ io.on('connection', (socket)=>{
 		});
 		socket.on('disconnect', (name)=>{
 			delete peers[room][user];
+			socket.broadcast.to(room).send(currentPeers);
 		})
 	})
 })
