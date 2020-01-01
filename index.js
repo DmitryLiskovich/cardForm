@@ -2,6 +2,7 @@ const http = require('http');
 require("dotenv").config();
 const port = process.env.PORT || 80;
 const app = require("./api/app");
+let timer;
 
 const server = http.createServer(app);
 server.listen(port, ()=>{
@@ -38,9 +39,18 @@ io.on('connection', (socket)=>{
 		socket.on('close', id => {
 			console.log(id);
 		});
+		socket.on('message-from', (message)=>{
+			socket.to(room).to(message.id).emit('message-from', message)
+		})
+		socket.on('typing', (userName)=>{
+			socket.broadcast.to(room).emit('message-from',{message:`${userName} is typing`, type: 'typing'});
+			if(timer){
+				clearInterval(timer);
+			}
+			timer = setTimeout(()=> socket.broadcast.to(room).emit('message-from',{message: null, type: 'typing-end'}), 1000);
+		});
 		socket.on('disconnect', (name)=>{
 			delete peers[room][user];
-			
 			socket.broadcast.to(room).send(currentPeers);
 		})
 	})
