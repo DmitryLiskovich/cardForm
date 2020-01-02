@@ -17,6 +17,7 @@ const io = require('socket.io').listen(server);
 io.on('connection', (socket)=>{
 	socket.on('join', (room, user)=>{
 		socket.join(room);
+		messageHistory[room] = [];
 		if(!peers[room]){
 			peers[room] = {};
 			peers[room][user] = null;
@@ -36,11 +37,9 @@ io.on('connection', (socket)=>{
 			peers[room][user] = message;
 			socket.broadcast.to(room).send(currentPeers);
 		})
-		socket.on('close', id => {
-			console.log(id);
-		});
 		socket.on('message-from', (message)=>{
-			socket.to(room).to(message.id).emit('message-from', message)
+			messageHistory[room].push({message: message.input, id: message.id})
+			socket.to(room).emit('message-from', message)
 		})
 		socket.on('typing', (userName)=>{
 			socket.broadcast.to(room).emit('message-from',{message:`${userName} is typing`, type: 'typing'});
