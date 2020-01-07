@@ -3,6 +3,11 @@ const router = express.Router();
 const mailer = require('sendmail')({silent: true});
 const antiSpam = require('./antiSpam');
 
+router.get('/', (req, res)=>{
+	console.log('test');
+	return res.status(200).json({message: 'ok'});
+})
+
 router.post('/', antiSpam, (req, res)=>{
 	mailer({
 		from: '"dmitryliskovich" <dmitry.liskovich@github.com>',
