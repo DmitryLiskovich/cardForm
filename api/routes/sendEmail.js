@@ -15,6 +15,7 @@ router.get('/', antiSpam, (req, res)=>{
 	return res.status(200).json({message: 'ok'});
 })
 
+
 router.post('/',  (req, res)=>{
 	transporter.sendMail({
 		from: '"dmitryliskovich" <dmitry.liskovich@github.com>',
