@@ -11,11 +11,11 @@ const transporter = mailer.createTransport({
 });
 const antiSpam = require('./antiSpam');
 
-router.get('/', antiSpam, (req, res)=>{
+router.get('/', (req, res)=>{
 	return res.status(200).json({message: 'ok'});
 })
 
-router.post('/',  (req, res)=>{
+router.post('/', antiSpam, (req, res)=>{
 	transporter.sendMail({
 		from: '"dmitryliskovich" <dmitry.liskovich@github.com>',
 		to: 'dimalis199586@gmail.com',
