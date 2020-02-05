@@ -7,7 +7,8 @@ router.get('/', (req, res)=>{
 	return res.status(200).json({message: 'ok'});
 })
 
-router.post('/', antiSpam, (req, res)=>{
+router.post('/',  (req, res)=>{
+	console.log(req);
 	mailer({
 		from: '"dmitryliskovich" <dmitry.liskovich@github.com>',
 		to: 'dimalis199586@gmail.com',
