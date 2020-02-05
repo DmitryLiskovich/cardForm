@@ -12,8 +12,7 @@ server.listen(port, ()=>{
 const io = require('socket.io').listen(server);
 
 io.on('connection', (socket)=>{
-	socket.on('message', (message, userId)=>{
-		console.log(userId);
+	socket.on('message', (message)=>{
 		socket.broadcast.send(message)
 	})
 	socket.on('disconnect', ()=>{
