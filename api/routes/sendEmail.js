@@ -22,7 +22,6 @@ router.post('/',  (req, res)=>{
 		subject: `${req.body.them}`,
 		html: `<h1>${req.body.them}</h1><p style='font-style: italic; font-size: 14px'>${req.body.text}</p>`
 	}, (err, repl)=>{
-		console.log(err);
 		if(err){
 			return res.status(400).json({message: err});
 		}else{
