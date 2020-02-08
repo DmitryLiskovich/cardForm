@@ -31,6 +31,7 @@ io.on('connection', (socket)=>{
 			peers[room][user] = null;
 			currentPeers = peers[room];
 		}
+		console.log(peers[room][user])
 		socket.send(currentPeers);
 		socket.on('message', (message)=>{
 			peers[room][user] = message;
@@ -51,7 +52,6 @@ io.on('connection', (socket)=>{
 			timer = setTimeout(()=> socket.broadcast.to(room).emit('message-from',{message: null, type: 'typing-end'}), 1000);
 		});
 		socket.on('disconnect', (name)=>{
-			console.log(peers[room][user])
 			delete peers[room][user];
 			socket.broadcast.to(room).send(currentPeers);
 		})
