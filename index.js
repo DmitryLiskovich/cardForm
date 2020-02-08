@@ -51,10 +51,5 @@ io.on('connection', (socket)=>{
 			delete peers[room][user];
 			socket.broadcast.to(room).send(currentPeers);
 		})
-		socket.on('destroy', (name)=>{
-			console.log(name);
-			delete peers[room][user];
-			socket.broadcast.to(room).send(currentPeers);
-		})
 	})
 })
