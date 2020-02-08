@@ -51,6 +51,7 @@ io.on('connection', (socket)=>{
 			timer = setTimeout(()=> socket.broadcast.to(room).emit('message-from',{message: null, type: 'typing-end'}), 1000);
 		});
 		socket.on('disconnect', (name)=>{
+			console.log(peers[room][user])
 			delete peers[room][user];
 			socket.broadcast.to(room).send(currentPeers);
 		})
