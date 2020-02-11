@@ -1,10 +1,22 @@
 const express = require('express');
 const router = express.Router();
-const mailer = require('sendmail')({silent: true});
+const mailer = require('nodemailer');
+
+const transporter = mailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'dimalis199586@gmail.com',
+    pass: '164200Dima'
+  }
+});
 const antiSpam = require('./antiSpam');
 
-router.post('/', antiSpam, (req, res)=>{
-	mailer({
+router.get('/', (req, res)=>{
+	return res.status(200).json({message: 'ok'});
+})
+
+router.post('/', (req, res)=>{
+	transporter.sendMail({
 		from: '"dmitryliskovich" <dmitry.liskovich@github.com>',
 		to: 'dimalis199586@gmail.com',
 		subject: `${req.body.them}`,
