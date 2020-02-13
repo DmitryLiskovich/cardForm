@@ -15,11 +15,7 @@ router.get('/', antiSpam, (req, res)=>{
 	return res.status(200).json({message: 'ok'});
 })
 
-<<<<<<< HEAD
-router.post('/', (req, res)=>{
-=======
 router.post('/',  (req, res)=>{
->>>>>>> parent of 641170c... 'Server'
 	transporter.sendMail({
 		from: '"dmitryliskovich" <dmitry.liskovich@github.com>',
 		to: 'dimalis199586@gmail.com',
