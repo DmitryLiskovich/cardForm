@@ -11,7 +11,6 @@ server.listen(port, ()=>{
 });
 
 const peers = {};
-const usersInSessions = {};
 
 const io = require('socket.io').listen(server);
 
@@ -39,8 +38,8 @@ io.on('connection', (socket)=>{
 			});
 			socket.broadcast.to(room).send(currentPeers);
 		})
-		socket.on('stream', (message)=>{
-			socket.broadcast.to(room).send(message);
+		socket.on('share-screen-user', (message)=>{
+			socket.broadcast.to(room).emit('share-screen-user' ,message);
 		})
 		socket.on('disconnect', ()=>{
 			peers[room] = peers[room].filter((item) => item.userName !== user);
