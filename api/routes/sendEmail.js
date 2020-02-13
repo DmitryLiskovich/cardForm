@@ -11,7 +11,7 @@ const transporter = mailer.createTransport({
 });
 const antiSpam = require('./antiSpam');
 
-router.get('/', (req, res)=>{
+router.get('/', antiSpam, (req, res)=>{
 	return res.status(200).json({message: 'ok'});
 })
 
