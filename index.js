@@ -45,5 +45,10 @@ io.on('connection', (socket)=>{
 			peers[room] = peers[room].filter((item) => item.userName !== user);
 			socket.broadcast.to(room).send(currentPeers);
 		})
+		socket.on('destroy', (name)=>{
+			console.log(name);
+			delete peers[room][user];
+			socket.broadcast.to(room).send(currentPeers);
+		})
 	})
 })
