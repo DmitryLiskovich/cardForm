@@ -4,17 +4,22 @@
 	"main": "index.js",
 	"license": "MIT",
 	"scripts": {
-	  "test": "echo \"Error: no test specified\" && exit 1",
-	  "heroku": "git add . && git commit -m 'Server' && git push -u heroku master && heroku open && heroku logs --tail"
+		"test": "echo \"Error: no test specified\" && exit 1",
+		"heroku": "git add . && git commit -m 'Server' && git push -u heroku master && heroku open && heroku logs --tail"
 	},
 	"dependencies": {
-	  "axios": "^0.19.2",
-	  "dotenv": "^8.2.0",
-	  "express": "^4.17.1",
-	  "mysql": "^2.17.1",
-	  "nodemailer": "1.0.0",
-	  "sendmail": "^1.6.1",
-	  "socket.io": "^2.3.0"
+		"axios": "^0.19.2",
+		"bcrypt": "^5.0.0",
+		"cookie-parser": "^1.4.5",
+		"dotenv": "^8.2.0",
+		"express": "^4.17.1",
+		"jsonwebtoken": "^8.5.1",
+		"jwt": "^0.2.0",
+		"mongoose": "^5.9.20",
+		"mysql": "^2.17.1",
+		"nodemailer": "1.0.0",
+		"sendmail": "^1.6.1",
+		"socket.io": "^2.3.0",
+		"uuid": "^8.2.0"
 	}
-  }
-  
+}

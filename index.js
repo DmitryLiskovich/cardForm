@@ -1,8 +1,19 @@
-const http = require('http');
 require("dotenv").config();
-const port = process.env.PORT || 80;
+const http = require('http');
 const app = require("./api/app");
-let timer;
+const Users = require('./api/routes/database/Users');
+const Chats = require('./api/routes/database/Chats');
+const mongoose = require('mongoose');
+const { v4: uuidv4 } = require('uuid');
+const port = process.env.PORT || 8000;
+
+const chats = mongoose.model('chats', Chats);
+const users = mongoose.model('users', Users);
+
+mongoose.connect(process.env.DB_URL, { 
+	useNewUrlParser: true,
+	useUnifiedTopology: true  
+})
 
 const server = http.createServer(app);
 server.listen(port, ()=>{
@@ -10,45 +21,49 @@ server.listen(port, ()=>{
 	console.log("Express is open on port " + port);
 });
 
-const peers = {};
-
+// Socket controller
 const io = require('socket.io').listen(server);
 
 io.on('connection', (socket)=>{
-	socket.on('join', (room, user)=>{
-		socket.join(room);
-		if(!peers[room]){
-			peers[room] = [];
+	
+	socket.on('join', async (room, usersInChat)=>{
+		let newRoom = room;
+
+		if(room === 'new'){
+			newRoom = uuidv4();
+			chats.create({
+				chat_id: newRoom,
+			})
+			const user1 = await users.findOne({_id: usersInChat[0]});
+			const user2 = await users.findOne({_id: usersInChat[1]});
+			users.updateOne({_id: usersInChat[0]}, {sessions: {...user1.sessions, [usersInChat[1]]: newRoom}}).catch(e => console.log(e));
+			users.updateOne({_id: usersInChat[1]}, {sessions: {...user2.sessions, [usersInChat[0]]: newRoom}}).catch(e => console.log(e));
 		}
-		if(peers[room].some((item)=> item.userName === user)){
-			socket.send({type: 'err', message: 'Already created'});
-			return false;
-		}else{
-			socket.send({type: 'Ok', message: 'Created'});
-		}
-		peers[room].push({userName: user, callId: null, stream: null});
-		let currentPeers = peers[room];
-		socket.send(currentPeers);
-		socket.on('message', (message)=>{
-			currentPeers.forEach((item) => {
-				if(item.userName === message.name){
-					item.callId = message.peerID;
-					socket.send(currentPeers);
-				}
-			});
-			socket.broadcast.to(room).send(currentPeers);
+
+		const messages = await chats.findOne({chat_id: newRoom});
+		
+		socket.join(newRoom);
+		socket.emit('messages', messages.messages);
+		
+		socket.on('message', async (message) => {
+			const newMessage = {message, user: usersInChat[0], date: new Date()}
+			messages.messages.push(newMessage);
+			await chats.updateOne({chat_id: newRoom}, {messages: messages.messages}).catch(e => console.log(e));
+			socket.broadcast.to(newRoom).send(newMessage);
 		})
-		socket.on('share-screen-user', (message)=>{
-			socket.broadcast.to(room).emit('share-screen-user' ,message);
+
+		socket.on('leave', () => {
+			socket.leave(newRoom);
+			socket.removeAllListeners('leave');
+			socket.removeAllListeners('message');
+			socket.removeAllListeners('disconnect');
 		})
-		socket.on('disconnect', ()=>{
-			peers[room] = peers[room].filter((item) => item.userName !== user);
-			socket.broadcast.to(room).send(currentPeers);
-		})
-		socket.on('destroy', (name)=>{
-			console.log(name);
-			delete peers[room][user];
-			socket.broadcast.to(room).send(currentPeers);
+
+		socket.on('disconnect', () => {
+			socket.leave(newRoom);
+			socket.removeAllListeners('leave');
+			socket.removeAllListeners('message');
+			socket.removeAllListeners('disconnect');
 		})
 	})
 })
