@@ -10,6 +10,10 @@ const port = process.env.PORT || 8000;
 const chats = mongoose.model('chats', Chats);
 const users = mongoose.model('users', Users);
 
+const { PeerServer } = require('peer');
+
+PeerServer({ port: 9000, path: '/lis-chat' });
+
 mongoose.connect(process.env.DB_URL, { 
 	useNewUrlParser: true,
 	useUnifiedTopology: true  
@@ -50,7 +54,7 @@ io.on('connection', (socket)=>{
 			messages.messages.push(newMessage);
 			await chats.updateOne({chat_id: newRoom}, {messages: messages.messages}).catch(e => console.log(e));
 			socket.broadcast.to(newRoom).send(newMessage);
-		})
+		});
 
 		socket.on('leave', () => {
 			socket.leave(newRoom);

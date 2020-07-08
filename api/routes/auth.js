@@ -16,7 +16,9 @@ router.post('/', async (req, res) => {
 		return res.status(401).json({message: 'Invalid username or password'});
 	}
 	const user = await mongoose.model('users', User).findOne({login: req.body.login});
-
+	if(!user) {
+		return res.status(401).json({message: 'Somthing is wrong O_o'});
+	}
 	const result = await bcrypt.compare(req.body.password, user.password);
 	if(result) {
 		const token = jwt.sign({
@@ -27,6 +29,7 @@ router.post('/', async (req, res) => {
 		const refreshToken = uuidv4();;
 		res.cookie('jwt', token);
 		res.cookie('refresh', refreshToken, {httpOnly: true});
+		mongoose.model('users', User).updateOne({login: req.body.login}, {isOnline: true}).catch(e => console.log(e));
 		return res.status(200).json({message: 'U are welcome ^_^'});
 	} else {
 		return res.status(401).json({message: 'Somthing is wrong O_o'});

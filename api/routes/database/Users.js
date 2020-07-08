@@ -10,6 +10,7 @@ const User = new Schema({
 	friends: Object,
 	first_name: String,
 	last_name: String,
+	isOnline: Boolean
 })
 
 module.exports = User;

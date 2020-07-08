@@ -27,6 +27,9 @@ app.use("/register", register);
 const users = require("./routes/users");
 app.use("/users", users);
 
+const offline = require("./routes/offline");
+app.use("/offline", offline);
+
 const allUsers = require("./routes/allUsers");
 app.use("/allUsers", allUsers);
 
